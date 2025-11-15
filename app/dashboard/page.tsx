@@ -200,25 +200,52 @@ const Dashboard = async () => {
             </ul>
           </div>
           {/* {efficiency} */}
+          {/* Efficiency Chart - START */}
           <div className="bg-white rounded-lg border border-gray-200 p-6 shadow">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-gray-800 mb-4">
-                Efficiency
+              <h2 className="text-lg font-semibold text-gray-800">
+                Stock Efficiency
               </h2>
             </div>
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center mb-6">
               <div className="relative w-48 h-48">
-                <div className="absolute inset-0 rounded-full border-8 border-gray-200"></div>
-                <div
-                  className="absolute inset-0 rounded-full border-8 border-purple-600 "
-                  style={{
-                    clipPath:
-                      "polygon(50% 50%,50% 0%,100% 0%,100% 1000%,0% 100% ,0% 50%)",
-                  }}
-                ></div>
+                {/* SVG Container */}
+                <svg className="w-full h-full" viewBox="0 0 100 100">
+                  {/* الدائرة الخلفية (الرمادية) */}
+                  <circle
+                    className="text-gray-200"
+                    strokeWidth="10"
+                    stroke="currentColor"
+                    fill="transparent"
+                    r="42"
+                    cx="50"
+                    cy="50"
+                  />
+                  {/* الدائرة الأمامية (البنفسجية المتحركة) */}
+                  <circle
+                    className="text-purple-600"
+                    strokeWidth="10"
+                    strokeDasharray={2 * Math.PI * 42} // محيط الدائرة
+                    strokeDashoffset={
+                      2 * Math.PI * 42 * (1 - inStockPercentage / 100) // الجزء الذي سيتم إخفاؤه
+                    }
+                    strokeLinecap="round"
+                    stroke="currentColor"
+                    fill="transparent"
+                    r="42"
+                    cx="50"
+                    cy="50"
+                    style={{
+                      transform: "rotate(-90deg)",
+                      transformOrigin: "50% 50%",
+                      transition: "stroke-dashoffset 0.5s ease-in-out", // تأثير حركة ناعم
+                    }}
+                  />
+                </svg>
+                {/* النص في المنتصف */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-gray-900">
+                    <div className="text-3xl font-bold text-gray-900">
                       {inStockPercentage}%
                     </div>
                     <div className="text-sm text-gray-600">In Stock</div>
@@ -226,24 +253,44 @@ const Dashboard = async () => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-2 text-gray-600">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-gray-200 rounded-full"></div>
-                <h1>In Stock</h1>
-                <h1 className="font-bold">({inStockPercentage}%)</h1>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-purple-600 rounded-full"></div>
-                <h1>Low Stock</h1>
-                <h1 className="font-bold">({lowStockPercentage}%)</h1>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-gray-200 rounded-full"></div>
-                <h1>Out of Stock</h1>
-                <h1 className="font-bold">({outOfStockPercentage}%)</h1>
-              </div>
-            </div>
+            {/* التفاصيل في الأسفل */}
+            <ul className="space-y-3 text-sm">
+              <li className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="h-3 w-3 rounded-full bg-purple-600"></span>
+                  <span className="text-gray-600">
+                    In Stock ({inStockCount})
+                  </span>
+                </div>
+                <span className="font-semibold text-gray-800">
+                  {inStockPercentage}%
+                </span>
+              </li>
+              <li className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="h-3 w-3 rounded-full bg-yellow-400"></span>
+                  <span className="text-gray-600">
+                    Low Stock ({lowStockCount})
+                  </span>
+                </div>
+                <span className="font-semibold text-gray-800">
+                  {lowStockPercentage}%
+                </span>
+              </li>
+              <li className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="h-3 w-3 rounded-full bg-red-500"></span>
+                  <span className="text-gray-600">
+                    Out of Stock ({outOfStockCount})
+                  </span>
+                </div>
+                <span className="font-semibold text-gray-800">
+                  {outOfStockPercentage}%
+                </span>
+              </li>
+            </ul>
           </div>
+          {/* Efficiency Chart - END */}
         </div>
       </main>
     </div>
